@@ -59,15 +59,15 @@ public class WeatherSettingsPage : SettingsPageBase
                 tagCombo.SelectedIndex = Math.Max(0, Array.IndexOf(tags, item.Tag));
                 if (tagCombo.SelectedIndex < 0) tagCombo.SelectedIndex = 0;
                 tagCombo.SelectionChanged += (a, b) => item.Tag = tags[tagCombo.SelectedIndex];
-                // 刷新同类按钮
+                // 刷新当前按钮
                 var refreshBtn = new Button { Content = "🔄", Padding = new Thickness(4, 2) };
-                ToolTip.SetTip(refreshBtn, "刷新同类问候语");
+                ToolTip.SetTip(refreshBtn, "刷新当前问候语");
                 refreshBtn.Click += (a, e) =>
                 {
                     refreshBtn.Content = "⏳";
                     var currentTag = item.Tag;
                     if (string.IsNullOrEmpty(currentTag)) currentTag = tags[tagCombo.SelectedIndex];
-                    RefreshWeatherByTag(currentTag);
+                    RefreshSingleWeatherItem(item, currentTag);
                     RefreshList();
                     refreshBtn.Content = "🔄";
                 };
@@ -102,9 +102,9 @@ public class WeatherSettingsPage : SettingsPageBase
     }
 
     /// <summary>
-    /// 刷新指定标签的所有天气问候语，从该类型预设库中随机选取
+    /// 刷新单条天气问候语，从该类型预设库中随机选取
     /// </summary>
-    void RefreshWeatherByTag(string tag)
+    void RefreshSingleWeatherItem(WeatherGreetingItem item, string tag)
     {
         var pools = new System.Collections.Generic.Dictionary<string, string[]>
         {
@@ -119,13 +119,9 @@ public class WeatherSettingsPage : SettingsPageBase
 
         if (!pools.TryGetValue(tag, out var pool)) return;
 
-        var sameTagItems = _svc.Settings.WeatherGreetingItems.Where(i => i.Tag == tag && i.Keyword != "默认").ToList();
         var rnd = new Random();
-        foreach (var item in sameTagItems)
-        {
-            var text = pool[rnd.Next(pool.Length)];
-            if (!string.IsNullOrEmpty(text)) item.Text = text;
-        }
+        var text = pool[rnd.Next(pool.Length)];
+        if (!string.IsNullOrEmpty(text)) item.Text = text;
         _svc.SaveSettings();
     }
 

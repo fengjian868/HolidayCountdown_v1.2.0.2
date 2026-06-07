@@ -70,15 +70,15 @@ public class GreetingSettingsPage : SettingsPageBase
                 tagCombo.SelectedIndex = Math.Max(0, Array.IndexOf(tags, slot.Tag));
                 if (tagCombo.SelectedIndex < 0) tagCombo.SelectedIndex = 0;
                 tagCombo.SelectionChanged += (a, b) => slot.Tag = tags[tagCombo.SelectedIndex];
-                // 刷新同类按钮
+                // 刷新当前按钮
                 var refreshBtn = new Button { Content = "🔄", Padding = new Thickness(4, 2) };
-                ToolTip.SetTip(refreshBtn, "刷新同类问候语");
+                ToolTip.SetTip(refreshBtn, "刷新当前问候语");
                 refreshBtn.Click += (a, e) =>
                 {
                     refreshBtn.Content = "⏳";
                     var currentTag = slot.Tag;
                     if (string.IsNullOrEmpty(currentTag)) currentTag = tags[tagCombo.SelectedIndex];
-                    RefreshByTag(currentTag);
+                    RefreshSingleSlot(slot, currentTag);
                     RefreshList();
                     refreshBtn.Content = "🔄";
                 };
@@ -149,7 +149,7 @@ public class GreetingSettingsPage : SettingsPageBase
                 headerRow.Children.Add(delBtn);
                 row.Children.Add(headerRow);
                 
-                // 第二行：时段 + 刷新同类按钮
+                // 第二行：时段 + 刷新当前按钮
                 var timeRow = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6 };
                 var startBox = Tx($"{item.StartHour:D2}:{item.StartMinute:D2}", 50, v =>
                 {
@@ -161,13 +161,13 @@ public class GreetingSettingsPage : SettingsPageBase
                 });
                 var textBox = Tx(item.Text, 200, v => item.Text = v);
                 var refreshBtn = new Button { Content = "🔄", Padding = new Thickness(4, 2) };
-                ToolTip.SetTip(refreshBtn, "刷新同类问候语");
+                ToolTip.SetTip(refreshBtn, "刷新当前问候语");
                 refreshBtn.Click += (a, e) =>
                 {
                     refreshBtn.Content = "⏳";
                     var currentTag = item.Tag;
                     if (string.IsNullOrEmpty(currentTag)) currentTag = days[tagCombo.SelectedIndex];
-                    RefreshSpecialByTag(currentTag);
+                    RefreshSingleSpecial(item, currentTag);
                     RefreshList();
                     refreshBtn.Content = "🔄";
                 };
@@ -199,9 +199,9 @@ public class GreetingSettingsPage : SettingsPageBase
     }
 
     /// <summary>
-    /// 刷新指定标签的所有时段问候语，从预设库中随机选取
+    /// 刷新单条时段问候语，从预设库中随机选取
     /// </summary>
-    void RefreshByTag(string tag)
+    void RefreshSingleSlot(TimeSlotGreeting slot, string tag)
     {
         var pools = new System.Collections.Generic.Dictionary<string, string[]>
         {
@@ -216,20 +216,16 @@ public class GreetingSettingsPage : SettingsPageBase
 
         if (!pools.TryGetValue(tag, out var pool)) return;
 
-        var sameTagSlots = _svc.Settings.TimeSlotGreetings.Where(s => s.Tag == tag).ToList();
         var rnd = new Random();
-        foreach (var slot in sameTagSlots)
-        {
-            var text = pool[rnd.Next(pool.Length)];
-            if (!string.IsNullOrEmpty(text)) slot.Text = text;
-        }
+        var text = pool[rnd.Next(pool.Length)];
+        if (!string.IsNullOrEmpty(text)) slot.Text = text;
         _svc.SaveSettings();
     }
 
     /// <summary>
-    /// 刷新指定标签的所有特殊日期问候语，从预设库中随机选取
+    /// 刷新单条特殊日期问候语，从预设库中随机选取
     /// </summary>
-    void RefreshSpecialByTag(string tag)
+    void RefreshSingleSpecial(SpecialDateGreeting item, string tag)
     {
         var pools = new System.Collections.Generic.Dictionary<string, string[]>
         {
@@ -244,13 +240,9 @@ public class GreetingSettingsPage : SettingsPageBase
 
         if (!pools.TryGetValue(tag, out var pool)) return;
 
-        var sameTagItems = _svc.Settings.SpecialDateGreetings.Where(s => s.Tag == tag).ToList();
         var rnd = new Random();
-        foreach (var item in sameTagItems)
-        {
-            var text = pool[rnd.Next(pool.Length)];
-            if (!string.IsNullOrEmpty(text)) item.Text = text;
-        }
+        var text = pool[rnd.Next(pool.Length)];
+        if (!string.IsNullOrEmpty(text)) item.Text = text;
         _svc.SaveSettings();
     }
 

@@ -14,7 +14,7 @@ using HolidayCountdown.Services;
 namespace HolidayCountdown.Views.Components;
 
 [ComponentInfo(
-    "4A8E2B91-C7D3-4F5A-9E1B-6C3D8F2A5E71",
+    "B7C1D9E3-F5A2-4B8C-9D0E-1A3F6B8C2D45",
     "节假日倒计时",
     "\uE8F5",
     "显示距离最近节假日的倒计时，横向排列，带弧形进度环"

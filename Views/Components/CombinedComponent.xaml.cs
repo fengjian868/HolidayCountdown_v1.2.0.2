@@ -14,7 +14,7 @@ using HolidayCountdown.Services;
 namespace HolidayCountdown.Views.Components;
 
 [ComponentInfo(
-    "F1E2D3C4-B5A6-7890-1234-567890ABCDEF",
+    "3A7F5B82-E9C1-4D6A-8F4B-2D7E9B3C5A18",
     "节假日+问候语",
     "\uE8F5",
     "合并显示节假日倒计时和时段问候语，可配置是否分开"

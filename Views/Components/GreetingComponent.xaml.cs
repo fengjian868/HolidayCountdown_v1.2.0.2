@@ -12,7 +12,7 @@ using HolidayCountdown.Services;
 namespace HolidayCountdown.Views.Components;
 
 [ComponentInfo(
-    "B2C3D4E5-F6A7-8901-BCDE-F12345678901",
+    "7B1F4C82-E9A5-4D3B-8F2C-5A7E9B1D3F64",
     "时段问候语",
     "\uE9D2",
     "根据时间显示早中晚问候、放学提醒和周日晚修提示"

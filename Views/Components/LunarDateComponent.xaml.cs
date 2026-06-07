@@ -16,7 +16,7 @@ using HolidayCountdown.Services;
 namespace HolidayCountdown.Views.Components;
 
 [ComponentInfo(
-    "D4E5F6A7-B8C9-0123-DEF0-123456789013",
+    "2E5B8D43-A1F7-4C9E-6B2D-8F4A1C7E3B95",
     "农历日期",
     "\uE787",
     "显示当前农历日期，支持自定义模板，有网络时自动刷新"

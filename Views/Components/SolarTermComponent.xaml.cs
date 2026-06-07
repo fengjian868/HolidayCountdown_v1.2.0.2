@@ -14,7 +14,7 @@ using HolidayCountdown.Services;
 namespace HolidayCountdown.Views.Components;
 
 [ComponentInfo(
-    "C3D4E5F6-A7B8-9012-CDEF-123456789012",
+    "9C3A5E71-B8D2-4C1F-7E4A-3B6D9F2C8E15",
     "24节气倒计时",
     "\uE9CA",
     "显示距离下一个24节气的剩余天数，带弧形进度环，有网络时自动刷新"

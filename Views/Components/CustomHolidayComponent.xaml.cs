@@ -12,7 +12,7 @@ using HolidayCountdown.Services;
 namespace HolidayCountdown.Views.Components;
 
 [ComponentInfo(
-    "E5F6A7B8-C9D0-1234-EF01-123456789014",
+    "5F1A9C62-E4B8-4D3A-7C1E-9B5D2F8A4C36",
     "自定义节日倒计时",
     "\uE915",
     "只显示你添加的自定义节日倒计时"
